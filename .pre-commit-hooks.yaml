@@ -1,0 +1,7 @@
+-   id: ruby-lint
+    name: ruby-lint
+    entry: ruby-lint
+    language: ruby
+    'types': [ruby]
+    args: []
+    additional_dependencies: []
