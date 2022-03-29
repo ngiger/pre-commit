@@ -1,7 +1,9 @@
 -   id: enforce-eclipse-format
     name: enforce-eclipse-format
-    entry: enforce-eclipse-format
-    language: ruby
+    description: Enforces the Eclipse built-in formatter. Needs an installed flatpak org.eclipse.Java
+    entry: ./enforce-eclipse-format.sh
+    language: script
     types: [java]
     args: []
     additional_dependencies: []
+    require_serial: true

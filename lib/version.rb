@@ -1,3 +1,0 @@
-module ENFORCE_ECLIPSE_FORMAT
-  VERSION = "0.1.1"
-end
