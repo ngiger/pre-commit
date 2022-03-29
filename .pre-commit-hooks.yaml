@@ -1,7 +1,7 @@
--   id: ruby-lint
-    name: ruby-lint
-    entry: ruby-lint
+-   id: enforce-eclipse-format
+    name: enforce-eclipse-format
+    entry: enforce-eclipse-format
     language: ruby
-    'types': [ruby]
+    types: [java]
     args: []
     additional_dependencies: []

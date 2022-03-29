@@ -1,32 +1,44 @@
 #!/usr/bin/env ruby
 
+require_relative('../lib/version')
 require 'open-uri'
-require 'optparse'
- 
+require 'optimist'
+opts = Optimist::options do
+  version " enforce-eclipse-format #{ENFORCE_ECLIPSE_FORMAT::VERSION} (c) 2022 Niklaus Giger"
+  banner <<-EOS
+Run Eclipse Formatter using one of the format file (Eclipse_builtin, Eclipse_2_1, Java_Conventions).
+
+Requires an installed eclipse IDE, found via which eclipse
+
+Usage:
+       enforce-eclipse-format [options] <filenames>+
+where [options] are:
+EOS
+  opt :format, "Formatter to use", :type => :string, :default => 'Eclipse_builtin'
+end
+
 ECLIPSE=`which eclipse`.chomp
-if ECLIPSE.eql?('') || File.directory?(ECLIPSE) || !File.ECLIPSE?(ECLIPSE)
+if ECLIPSE.eql?('') || File.directory?(ECLIPSE) || !File.executable?(ECLIPSE)
   puts "Could not find an eclipse ECLIPSE"
   exit(2)
 else
   Eclipse_Home = File.dirname(ECLIPSE)
-  puts "Eclipse_Home is #{Eclipse_Home}"
+  puts "Eclipse_Home is #{Eclipse_Home}" if $VERBOSE
 end
-Available_Formats = Dir.glob(File.join(File.dirname(__FILE__), '..', 'formats', '*.xml'))
-puts Available_Formats
-#Profile = open(source).read
-files = ARGV.clone
+Profile = File.expand_path(File.join(File.dirname(__FILE__), '..', 'formats', "#{opts[:format]}.xml"))
 
+files = ARGV.clone
 if files.length == 0
   puts "Missing dir argument. "
   puts "   #{__FILE__} will enforce the FormatterProfile for all *.java files below"
-  exit 2
+  exit(2)
 end
 
-tmpName = "profile.tmp"
-tmpProfile = File.open(tmpName, "w+") { |f| f.puts Profile }
-cmd = "#{ECLIPSE} -data '#{Date.today}' -application org.eclipse.jdt.core.JavaCodeFormatter -verbose " +
-  "-config #{tmpName} #{files.join(" ")}"
-puts cmd
-system(cmd)
-cmd = "git commit -m 'JavaCodeFormatter enforced' #{files.join(" ")}"
-system(cmd) # fails if nothing has changed, which is good as jenkins will not push a commit in this case
+puts "files are ##{files}" if $VERBOSE
+
+cmd = "#{ECLIPSE} -noSplash -application org.eclipse.jdt.core.JavaCodeFormatter -verbose " +
+  "-config #{Profile} #{files.join(" ")}"
+puts cmd if $VERBOSE
+status = system(cmd)
+puts "running #{cmd}\n   returned #{status}" if $VERBOSE
+exit(status)
