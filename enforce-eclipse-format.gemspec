@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.bindir = "bin"
   spec.require_paths = ["lib"]
   spec.executables = ["enforce-eclipse-format"]
-  spec.files = ["bin/enforce-eclipse-format"] + Dir.glob("formats/*.xml")
+  spec.files = ["bin/enforce-eclipse-format"] + Dir.glob("formats/*.xml") + Dir.glob("lib/*.rb")
   spec.add_dependency "optimist", "~>3.0.1"
   spec.add_development_dependency "standardrb", "~>1.0.1"
 end
