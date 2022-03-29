@@ -1,0 +1,17 @@
+PATH
+  remote: .
+  specs:
+    enforce-eclipse-format (0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  enforce-eclipse-format!
+
+BUNDLED WITH
+   2.1.4
